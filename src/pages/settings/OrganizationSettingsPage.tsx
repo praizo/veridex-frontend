@@ -93,14 +93,14 @@ export default function OrganizationSettingsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 max-w-4xl ">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Organization Settings</h2>
         <p className="text-muted-foreground">Manage your business profile and FIRS compliance settings.</p>
       </div>
 
       <form onSubmit={handleSubmit((data) => updateMutation.mutate(data))} className="space-y-8">
-        <Card className="overflow-hidden border-none shadow-lg bg-card/60 backdrop-blur-sm">
+        <Card className="overflow-hidden border border-muted/20 bg-card/60 backdrop-blur-sm">
           <CardHeader className="bg-primary/5 pb-8">
             <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center ring-1 ring-primary/20">
@@ -152,7 +152,7 @@ export default function OrganizationSettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-none shadow-lg bg-card/60 backdrop-blur-sm">
+        <Card className="border border-muted/20 bg-card/60 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
                 <Globe className="w-5 h-5 text-muted-foreground" /> Contact & Address

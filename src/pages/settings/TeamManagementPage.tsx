@@ -143,7 +143,7 @@ export default function TeamManagementPage() {
         </Dialog>
       </div>
 
-      <Card className="border-none shadow-xl bg-card/60 backdrop-blur-md overflow-hidden">
+      <Card className="border border-muted/20 shadow-md shadow-primary/5 bg-card/60 backdrop-blur-md overflow-hidden">
         <CardHeader className="pb-0">
             <div className="flex items-center gap-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
@@ -156,20 +156,24 @@ export default function TeamManagementPage() {
             </div>
         </CardHeader>
         <CardContent className="pt-6">
-           <Table>
-             <TableHeader>
-               <TableRow className="hover:bg-transparent border-muted/50">
-                 <TableHead>Member</TableHead>
-                 <TableHead>Role</TableHead>
-                 <TableHead>Joined At</TableHead>
-                 <TableHead className="text-right">Actions</TableHead>
-               </TableRow>
-             </TableHeader>
-             <TableBody>
-                {membersResponse?.data?.map((member) => (
-                    <TableRow key={member.id} className="border-muted/30 group transition-colors hover:bg-muted/30">
-                        <TableCell>
-                            <div className="flex items-center gap-3">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent border-muted/50">
+                  <TableHead className="w-12 text-center">#</TableHead>
+                  <TableHead>Member</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Joined At</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {membersResponse?.data?.map((member, index) => (
+                  <TableRow key={member.id} className="border-muted/30 group transition-colors hover:bg-muted/30">
+                    <TableCell className="text-center font-mono text-xs text-muted-foreground">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
                                 <div className="h-9 w-9 rounded-full bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center text-sm font-bold text-primary ring-1 ring-primary/20">
                                     {member.name.charAt(0)}
                                 </div>

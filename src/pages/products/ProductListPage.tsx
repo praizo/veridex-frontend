@@ -48,6 +48,7 @@ export default function ProductListPage() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Product Name</TableHead>
               <TableHead>SKU / Category</TableHead>
               <TableHead>HSN Code</TableHead>
@@ -58,19 +59,22 @@ export default function ProductListPage() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   Loading products...
                 </TableCell>
               </TableRow>
             ) : products.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground italic">
+                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground italic">
                   No products found. Add your first item to build your catalog.
                 </TableCell>
               </TableRow>
             ) : (
-              products.map((product: Product) => (
+              products.map((product: Product, index: number) => (
                 <TableRow key={product.id}>
+                  <TableCell className="text-center font-mono text-xs text-muted-foreground">
+                    {index + 1}
+                  </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       <span className="font-medium">{product.name}</span>

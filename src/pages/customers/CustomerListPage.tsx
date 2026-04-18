@@ -51,6 +51,7 @@ export default function CustomerListPage() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Customer Name</TableHead>
               <TableHead>TIN</TableHead>
               <TableHead>Contact Info</TableHead>
@@ -61,19 +62,22 @@ export default function CustomerListPage() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   Loading customers...
                 </TableCell>
               </TableRow>
             ) : customers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground italic">
+                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground italic">
                   No customers found. Add your first buyer to get started.
                 </TableCell>
               </TableRow>
             ) : (
-              customers.map((customer: Customer) => (
+              customers.map((customer: Customer, index: number) => (
                 <TableRow key={customer.id}>
+                  <TableCell className="text-center font-mono text-xs text-muted-foreground">
+                    {index + 1}
+                  </TableCell>
                   <TableCell className="font-medium">
                     {customer.name}
                   </TableCell>

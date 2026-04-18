@@ -82,6 +82,7 @@ export default function InvoiceListPage() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-12 text-center">#</TableHead>
               <TableHead className="w-30">Invoice #</TableHead>
               <TableHead>Customer</TableHead>
               <TableHead>Date</TableHead>
@@ -93,19 +94,22 @@ export default function InvoiceListPage() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell colSpan={7} className="h-24 text-center">
                   Loading invoices...
                 </TableCell>
               </TableRow>
             ) : invoices.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground italic">
+                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground italic">
                   No invoices found. Click "Create Invoice" to start your first submission.
                 </TableCell>
               </TableRow>
             ) : (
-                invoices.map((invoice: any) => (
+                invoices.map((invoice: any, index: number) => (
                     <TableRow key={invoice.id}>
+                        <TableCell className="text-center font-mono text-xs text-muted-foreground">
+                            {index + 1}
+                        </TableCell>
                         <TableCell className="font-mono font-medium">
                             {invoice.invoice_number}
                         </TableCell>
@@ -130,21 +134,33 @@ export default function InvoiceListPage() {
                             </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                        <MoreHorizontal className="h-4 w-4" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                    <DropdownMenuItem onClick={() => navigate(`/invoices/${invoice.id}`)}>
-                                        <Eye className="mr-2 h-4 w-4" /> View & Sign
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>Download PDF</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="flex items-center justify-end gap-2">
+                                <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="h-8 px-3 text-xs font-semibold hover:bg-primary hover:text-white transition-all duration-300"
+                                    onClick={() => navigate(`/invoices/${invoice.id}`)}
+                                >
+                                    <Eye className="mr-1 h-3 w-3" /> View & Sign
+                                </Button>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-muted">
+                                            <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-48">
+                                        <DropdownMenuLabel>Invoice Actions</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem onClick={() => navigate(`/invoices/${invoice.id}`)}>
+                                            <Eye className="mr-2 h-4 w-4" /> Detail View
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <FileText className="mr-2 h-4 w-4" /> Download PDF
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
                         </TableCell>
                     </TableRow>
                 ))

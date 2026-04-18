@@ -1,5 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { reportApi } from '@/api/reports';
+
+interface B2CReportEntry {
+  status: string;
+  total_count: number;
+  total_amount: number;
+}
+
+interface B2CSummary {
+  count: number;
+  amount: number;
+  vat: number;
+}
+
+interface B2CReportResponse {
+  data: B2CReportEntry[];
+  summary: B2CSummary;
+}
 import { 
     Card, 
     CardContent, 
@@ -41,7 +58,7 @@ const STATUS_COLORS: Record<string, string> = {
 export default function ReportB2CPage() {
   const { data: b2cData, isLoading } = useQuery({
     queryKey: ['b2c-summary'],
-    queryFn: () => reportApi.getB2cSummary().then(res => res.data),
+    queryFn: () => reportApi.getB2cSummary().then(res => res.data as B2CReportResponse),
   });
 
   const handleExport = async () => {
@@ -56,6 +73,7 @@ export default function ReportB2CPage() {
       link.remove();
       toast.success('B2C Report exported successfully');
     } catch (error) {
+        console.error('B2C Export error:', error);
         toast.error('Failed to export report');
     }
   };
@@ -80,14 +98,14 @@ export default function ReportB2CPage() {
             Consumer-level transaction insights and regulatory reporting.
           </p>
         </div>
-        <Button onClick={handleExport} className="shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95">
+        <Button onClick={handleExport}>
           <Download className="mr-2 h-4 w-4" /> Export B2C Invoices
         </Button>
       </div>
 
       {/* ─── Metric Cards ─── */}
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="border-none shadow-xl bg-card/60 backdrop-blur-md overflow-hidden relative group">
+        <Card className="border border-muted/20  bg-card/60 backdrop-blur-md overflow-hidden relative group">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <Users className="h-12 w-12 text-primary" />
           </div>
@@ -103,7 +121,7 @@ export default function ReportB2CPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-none shadow-xl bg-card/60 backdrop-blur-md overflow-hidden relative group">
+        <Card className="border border-muted/20  bg-card/60 backdrop-blur-md overflow-hidden relative group">
            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <TrendingUp className="h-12 w-12 text-blue-500" />
           </div>
@@ -116,7 +134,7 @@ export default function ReportB2CPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-none shadow-xl bg-card/60 backdrop-blur-md overflow-hidden relative group">
+        <Card className="border border-muted/20  bg-card/60 backdrop-blur-md overflow-hidden relative group">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <ShieldCheck className="h-12 w-12 text-emerald-500" />
           </div>
@@ -132,7 +150,7 @@ export default function ReportB2CPage() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* ─── Status Chart ─── */}
-        <Card className="border-none shadow-xl bg-card/60 backdrop-blur-md">
+        <Card className="border-none  bg-card/60 backdrop-blur-md">
           <CardHeader className="flex flex-row items-center gap-2">
             <PieChart className="h-5 w-5 text-primary" />
             <div>
@@ -162,7 +180,7 @@ export default function ReportB2CPage() {
                     }}
                 />
                 <Bar dataKey="total_count" radius={[0, 4, 4, 0]}>
-                  {chartData.map((entry: any, index: number) => (
+                  {chartData.map((entry: B2CReportEntry, index: number) => (
                     <Cell key={`cell-${index}`} fill={STATUS_COLORS[entry.status] || '#8884d8'} />
                   ))}
                 </Bar>
@@ -172,7 +190,7 @@ export default function ReportB2CPage() {
         </Card>
 
         {/* ─── Performance Insight ─── */}
-        <Card className="border-none shadow-xl bg-card/60 backdrop-blur-md">
+        <Card className="border-none  bg-card/60 backdrop-blur-md">
           <CardHeader className="flex flex-row items-center gap-2">
             <FileBarChart className="h-5 w-5 text-primary" />
             <div>
@@ -191,7 +209,7 @@ export default function ReportB2CPage() {
                 />
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip 
-                     formatter={(value: any) => formatCurrency(value)}
+                     formatter={(value: number) => formatCurrency(value)}
                      contentStyle={{ 
                         backgroundColor: 'rgba(15, 23, 42, 0.9)', 
                         borderColor: '#334155',

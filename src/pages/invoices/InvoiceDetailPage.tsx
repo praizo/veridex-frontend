@@ -134,20 +134,21 @@ export default function InvoiceDetailPage() {
         </div>
         <div className="flex items-center gap-2">
             <Button 
-                variant="outline" 
+                variant="secondary" 
                 size="sm" 
                 onClick={handleDownloadPdf}
                 disabled={activeAction === 'download'}
+                className="h-10 text-xs font-bold"
             >
                 {activeAction === 'download' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Printer className="mr-2 h-4 w-4" />} 
                 {activeAction === 'download' ? 'Generating...' : 'Print PDF'}
             </Button>
             {isDraft && (
                 <Button 
-                    variant="secondary" 
                     size="sm"
                     disabled={!!activeAction}
                     onClick={() => handleAction('validate', validateMutation)}
+                    className="h-10 text-xs font-bold"
                 >
                     {activeAction === 'validate' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldCheck className="mr-2 h-4 w-4" />}
                     Step 1: Validate
@@ -158,6 +159,7 @@ export default function InvoiceDetailPage() {
                     size="sm"
                     disabled={!!activeAction}
                     onClick={() => handleAction('sign', signMutation)}
+                    className="h-10 text-xs font-bold"
                 >
                     {activeAction === 'sign' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldCheck className="mr-2 h-4 w-4" />}
                     Step 2: Sign & Official Submission
@@ -217,6 +219,7 @@ export default function InvoiceDetailPage() {
                 <Table className="[&_tr]:border-b-slate-100">
                     <TableHeader className="bg-slate-50/50">
                         <TableRow className="hover:bg-transparent">
+                            <TableHead className="w-12 text-center text-slate-500 text-xs tracking-wider uppercase font-bold">#</TableHead>
                             <TableHead className="text-slate-500 text-xs tracking-wider uppercase font-bold">Item Description</TableHead>
                             <TableHead className="text-right text-slate-500 text-xs tracking-wider uppercase font-bold">Qty</TableHead>
                             <TableHead className="text-right text-slate-500 text-xs tracking-wider uppercase font-bold">Price</TableHead>
@@ -227,6 +230,9 @@ export default function InvoiceDetailPage() {
                     <TableBody>
                         {invoice.lines?.map((line: any, idx: number) => (
                             <TableRow key={idx} className="hover:bg-slate-50/50 transition-colors">
+                                <TableCell className="text-center font-mono text-xs text-slate-400">
+                                    {idx + 1}
+                                </TableCell>
                                 <TableCell className="py-5">
                                     <p className="font-bold text-slate-800">{line.item_name}</p>
                                     <p className="text-xs text-slate-400 mt-1 max-w-50 truncate">{line.item_description}</p>

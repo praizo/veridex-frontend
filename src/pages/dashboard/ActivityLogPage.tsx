@@ -35,6 +35,7 @@ export default function ActivityLogPage() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-12 text-center">#</TableHead>
               <TableHead>Event</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>User</TableHead>
@@ -44,7 +45,7 @@ export default function ActivityLogPage() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center">
+                <TableCell colSpan={5} className="h-24 text-center">
                   <div className="flex items-center justify-center">
                     <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                   </div>
@@ -52,13 +53,14 @@ export default function ActivityLogPage() {
               </TableRow>
             ) : !response?.data?.length ? (
               <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
                   <ShieldAlert className="mx-auto mb-2 h-6 w-6" />
                   No activity logs found.
                 </TableCell>
               </TableRow>
             ) : (
-              response.data.map((log) => {
+              response.data.map((log, index) => {
+                const serialNumber = (response.meta.current_page - 1) * response.meta.per_page + index + 1;
                 let badgeVariant: "default" | "secondary" | "destructive" | "outline" = "outline";
                 if (log.action.includes('FAIL') || log.action.includes('ERROR')) badgeVariant = 'destructive';
                 else if (log.action.includes('SUCCESS') || log.action.includes('CONFIRM') || log.action.includes('SIGN')) badgeVariant = 'default';
@@ -66,6 +68,9 @@ export default function ActivityLogPage() {
 
                 return (
                   <TableRow key={log.id} className="hover:bg-muted/50 transition-colors">
+                    <TableCell className="text-center font-mono text-xs text-muted-foreground">
+                      {serialNumber}
+                    </TableCell>
                     <TableCell className="font-medium">
                       <Badge variant={badgeVariant} className="font-mono text-[10px] tracking-wider uppercase">
                         {log.action.replace(/_/g, ' ')}

@@ -11,6 +11,8 @@ import {
   BarChart,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
+import { useSidebar } from '@/hooks/use-sidebar';
+import { Logo } from '@/components/common/Logo';
 import {
   Sidebar,
   SidebarContent,
@@ -49,6 +51,7 @@ const settingsItems = [
 
 export function AppSidebar() {
   const { logout, user } = useAuth();
+  const { state } = useSidebar();
   const location = useLocation();
 
   const initials = user?.name
@@ -66,12 +69,12 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild tooltip="Veridex">
               <a href="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Building2 className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground ">
+                  <Logo iconOnly className="text-white" />
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Veridex</span>
-                  <span className="truncate text-xs text-muted-foreground">
+                <div className="grid flex-1 text-left text-sm leading-tight ml-1">
+                  <span className="truncate font-bold tracking-tight">Veridex<sup className="text-[10px] ml-0.5 opacity-50">™</sup></span>
+                  <span className="truncate text-[10px] uppercase font-medium tracking-wider text-muted-foreground/80">
                     {user?.current_organization?.name ?? 'E-Invoicing'}
                   </span>
                 </div>

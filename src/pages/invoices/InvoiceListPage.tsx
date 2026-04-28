@@ -60,7 +60,7 @@ export default function InvoiceListPage() {
                         link.remove();
                         window.URL.revokeObjectURL(url);
                         toast.success("Export Complete", { description: "CSV file downloaded successfully." });
-                    } catch (error) {
+                    } catch {
                         toast.error("Export Failed", { description: "Unabled to generate the CSV ledger." });
                     } finally {
                         setIsExporting(false);

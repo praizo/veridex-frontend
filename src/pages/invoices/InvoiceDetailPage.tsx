@@ -62,18 +62,6 @@ export default function InvoiceDetailPage() {
     onSettled: () => setActiveAction(null)
   });
 
-  const _transmitMutation = useMutation({
-    mutationFn: () => invoiceApi.transmit(Number(id)),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['invoice', id] });
-      toast.success("Invoice Transmitted", { description: "The official invoice has been delivered to the customer via NRS." });
-    },
-    onError: (err: { response?: { data?: { message?: string } } }) => {
-      toast.error("Transmission Failed", { description: err.response?.data?.message || "NRS could not deliver the invoice." });
-    },
-    onSettled: () => setActiveAction(null)
-  });
-
   const paymentMutation = useMutation({
     mutationFn: (status: string) => invoiceApi.updatePayment(Number(id), status),
     onSuccess: () => {

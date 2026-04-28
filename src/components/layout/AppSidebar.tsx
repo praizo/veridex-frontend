@@ -51,7 +51,7 @@ const settingsItems = [
 
 export function AppSidebar() {
   const { logout, user } = useAuth();
-  const { state: _state } = useSidebar();
+  useSidebar();
   const location = useLocation();
 
   const initials = user?.name

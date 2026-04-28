@@ -40,10 +40,10 @@ const invoiceLineSchema = z.object({
   product_category: z.string().min(1, 'Category is required'),
   invoiced_quantity: z.number().min(0.0001, 'Quantity must be > 0'),
   price_amount: z.number().min(0, 'Price must be >= 0'),
-  base_quantity: z.number().min(1).default(1),
-  price_unit: z.string().min(1).default('UNIT'),
+  base_quantity: z.number().min(1),
+  price_unit: z.string().min(1),
   tax_category_id: z.string().min(1, 'Tax category is required'),
-  tax_percent: z.number().default(7.5),
+  tax_percent: z.number(),
 });
 
 const invoiceSchema = z.object({
@@ -52,7 +52,7 @@ const invoiceSchema = z.object({
   invoice_type_code: z.string().min(1, 'Invoice type is required'),
   issue_date: z.string().min(1, 'Issue date is required'),
   due_date: z.string().optional(),
-  document_currency_code: z.string().min(1).default('NGN'),
+  document_currency_code: z.string().min(1),
   payment_means_code: z.string().min(1, 'Payment method is required'),
   invoice_lines: z.array(invoiceLineSchema).min(1, 'At least one line item is required'),
 });
@@ -111,7 +111,7 @@ function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (
                 {codes?.map((code) => (
                   <CommandItem
                     key={code.hscode}
-                    value={`${code.hscode} ${code.description}`}
+                    value={`${code.hscode} ${code.value}`}
                     onSelect={() => {
                       onSelect(code);
                       setOpen(false);

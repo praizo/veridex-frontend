@@ -11,6 +11,7 @@ export interface InvoiceLine {
   base_quantity: number;
   price_unit: string;
   line_extension_amount: number;
+  tax_category_id?: string;
   tax_percent: number;
 }
 

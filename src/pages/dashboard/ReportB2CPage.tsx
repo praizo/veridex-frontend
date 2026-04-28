@@ -209,7 +209,7 @@ export default function ReportB2CPage() {
                 />
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip 
-                     formatter={(value: number) => formatCurrency(value)}
+                     formatter={(value) => formatCurrency(Number(value))}
                      contentStyle={{ 
                         backgroundColor: 'rgba(15, 23, 42, 0.9)', 
                         borderColor: '#334155',

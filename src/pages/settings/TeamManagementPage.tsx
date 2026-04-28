@@ -194,7 +194,7 @@ export default function TeamManagementPage() {
                                 <Select 
                                     defaultValue={member.role} 
                                     onValueChange={(val) => updateRoleMutation.mutate({ userId: member.id, role: val })}
-                                    disabled={currentUser?.id === member.id || member.role === 'owner'}
+                                    disabled={currentUser?.id === member.id}
                                 >
                                     <SelectTrigger className="w-32 h-8 text-xs border-transparent bg-transparent hover:bg-background/80 transition-all">
                                         <SelectValue />

@@ -22,7 +22,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { invoiceApi } from '@/api/invoices';
+import type { InvoiceLine } from '@/api/invoices';
 import { toast } from 'sonner';
+
+interface StateTransition {
+  to_status: string;
+  trigger: string;
+  created_at: string;
+}
 
 export default function InvoiceDetailPage() {
   const { id } = useParams();
@@ -216,7 +223,7 @@ export default function InvoiceDetailPage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {invoice.lines?.map((line: Record<string, unknown>, idx: number) => (
+                        {invoice.lines?.map((line: InvoiceLine, idx: number) => (
                             <TableRow key={idx} className="hover:bg-slate-50/50 transition-colors">
                                 <TableCell className="text-center font-mono text-xs text-slate-400">
                                     {idx + 1}
@@ -317,7 +324,7 @@ export default function InvoiceDetailPage() {
                 <CardContent>
                     <div className="space-y-4">
                         {invoice.state_transitions?.length > 0 ? (
-                            invoice.state_transitions.map((transition: Record<string, string>, idx: number) => (
+                            invoice.state_transitions.map((transition: StateTransition, idx: number) => (
                                 <div key={idx} className="relative pl-4 border-l pb-4 last:pb-0">
                                     <div className="absolute -left-1 top-1 h-2 w-2 rounded-full bg-primary" />
                                     <p className="text-xs font-bold leading-none capitalize">{transition.to_status.replace('_', ' ')}</p>

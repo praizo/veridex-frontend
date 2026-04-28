@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { resourceApi } from "@/api/resources";
+import type { HsCode } from "@/api/resources";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -58,7 +59,7 @@ const invoiceSchema = z.object({
 
 type InvoiceFormValues = z.infer<typeof invoiceSchema>;
 
-function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (code: { hscode: string; value: string; description: string }) => void; hsCodes: { hscode: string; value: string; description: string }[] }) {
+function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (code: HsCode) => void; hsCodes: HsCode[] }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -71,7 +72,7 @@ function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (
     return hsCodes
       .filter(c => 
         c.hscode.toLowerCase().includes(searchLow) || 
-        c.description.toLowerCase().includes(searchLow)
+        c.value.toLowerCase().includes(searchLow)
       )
       .slice(0, 100);
   }, [hsCodes, search]);
@@ -90,7 +91,7 @@ function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (
           className="w-full justify-between px-2 text-xs h-9 overflow-hidden"
         >
           {selected ? (
-            <span className="truncate">{selected.hscode} - {selected.description}</span>
+            <span className="truncate">{selected.hscode} - {selected.value}</span>
           ) : (
             "Select HSN..."
           )}
@@ -124,7 +125,7 @@ function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (
                     />
                     <div className="flex flex-col text-left">
                         <span className="font-mono text-sm">{code.hscode}</span>
-                        <span className="text-[10px] text-muted-foreground line-clamp-1">{code.description}</span>
+                        <span className="text-[10px] text-muted-foreground line-clamp-1">{code.value}</span>
                     </div>
                   </CommandItem>
                 ))}
@@ -195,7 +196,6 @@ export default function InvoiceCreatePage() {
           price_amount: 0,
           base_quantity: 1,
           price_unit: 'UNIT',
-          line_extension_amount: 0,
           tax_category_id: 'STANDARD_VAT',
           tax_percent: 7.5,
         }
@@ -404,7 +404,6 @@ export default function InvoiceCreatePage() {
                     price_amount: 0,
                     base_quantity: 1,
                     price_unit: 'UNIT',
-                    line_extension_amount: 0,
                     tax_category_id: 'STANDARD_VAT',
                     tax_percent: 7.5,
                 })}

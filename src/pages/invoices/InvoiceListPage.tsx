@@ -24,6 +24,15 @@ import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+interface InvoiceListItem {
+  id: number;
+  invoice_number: string;
+  issue_date: string;
+  payable_amount: number;
+  status: string;
+  customer?: { name: string };
+}
+
 export default function InvoiceListPage() {
   const navigate = useNavigate();
   const [isExporting, setIsExporting] = useState(false);
@@ -105,7 +114,7 @@ export default function InvoiceListPage() {
                 </TableCell>
               </TableRow>
             ) : (
-                invoices.map((invoice: Record<string, unknown>, index: number) => (
+                invoices.map((invoice: InvoiceListItem, index: number) => (
                     <TableRow key={invoice.id}>
                         <TableCell className="text-center font-mono text-xs text-muted-foreground">
                             {index + 1}

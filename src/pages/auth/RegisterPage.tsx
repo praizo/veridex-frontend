@@ -94,7 +94,7 @@ export default function RegisterPage() {
       await registerUser(data);
       navigate('/');
     } catch (err) {
-      const message = (err as any)?.response?.data?.message || 'Failed to register. Please try again.';
+      const message = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to register. Please try again.';
       setServerError(message);
     }
   };

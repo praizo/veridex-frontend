@@ -58,7 +58,7 @@ const invoiceSchema = z.object({
 
 type InvoiceFormValues = z.infer<typeof invoiceSchema>;
 
-function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (code: any) => void; hsCodes: any[] }) {
+function HsnCombobox({ value, onSelect, hsCodes }: { value?: string; onSelect: (code: { hscode: string; value: string; description: string }) => void; hsCodes: { hscode: string; value: string; description: string }[] }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -253,18 +253,18 @@ export default function InvoiceCreatePage() {
         }]
       };
 
-      const res = await (invoiceApi.create(payload) as any);
-      const invoiceId = res.data.data.id;
+      const res = await invoiceApi.create(payload);
+      const invoiceId = (res as { data: { data: { id: number } } }).data.data.id;
       
       toast.success("Invoice created", { 
         description: "Your draft has been saved. You can now validate and sign it." 
       });
       
       navigate(`/invoices/${invoiceId}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to save invoice', error);
       toast.error("Creation failed", { 
-        description: error.response?.data?.message || "Please check the form for errors." 
+        description: (error as { response?: { data?: { message?: string } } }).response?.data?.message || "Please check the form for errors."
       });
     } finally {
       setIsSaving(false);

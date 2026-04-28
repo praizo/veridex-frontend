@@ -70,7 +70,7 @@ export default function OrganizationSettingsPage() {
       queryClient.invalidateQueries({ queryKey: ['current-organization'] });
       toast.success('Settings updated successfully');
     },
-    onError: (err: any) => {
+    onError: (err: { response?: { data?: { message?: string } } }) => {
       toast.error('Failed to update settings', {
         description: err.response?.data?.message || 'Please check the form for errors.'
       });

@@ -89,8 +89,8 @@ export function CustomerCreateDialog({ children, onSuccess, open, onOpenChange }
       if (onSuccess) {
          onSuccess(newCustomer.id);
       }
-    } catch (err: any) {
-      setServerError(err?.response?.data?.message || 'An error occurred while creating the customer.');
+    } catch (err: unknown) {
+      setServerError((err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'An error occurred while creating the customer.');
     } finally {
       setIsSubmitting(false);
     }

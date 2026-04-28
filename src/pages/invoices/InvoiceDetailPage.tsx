@@ -44,7 +44,7 @@ export default function InvoiceDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['invoice', id] });
       toast.success("NRS Validation Passed", { description: "You can now proceed to sign the invoice." });
     },
-    onError: (err: any) => {
+    onError: (err: { response?: { data?: { message?: string } } }) => {
       toast.error("NRS Validation Failed", { description: err.response?.data?.message || "Check invoice data and try again." });
     },
     onSettled: () => setActiveAction(null)
@@ -56,19 +56,19 @@ export default function InvoiceDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['invoice', id] });
       toast.success("Invoice Signed & Submitted", { description: "An IRN has been generated and the invoice has been transmitted." });
     },
-    onError: (err: any) => {
+    onError: (err: { response?: { data?: { message?: string } } }) => {
       toast.error("Signing Failed", { description: err.response?.data?.message || "NRS rejected the signing request." });
     },
     onSettled: () => setActiveAction(null)
   });
 
-  const transmitMutation = useMutation({
+  const _transmitMutation = useMutation({
     mutationFn: () => invoiceApi.transmit(Number(id)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoice', id] });
       toast.success("Invoice Transmitted", { description: "The official invoice has been delivered to the customer via NRS." });
     },
-    onError: (err: any) => {
+    onError: (err: { response?: { data?: { message?: string } } }) => {
       toast.error("Transmission Failed", { description: err.response?.data?.message || "NRS could not deliver the invoice." });
     },
     onSettled: () => setActiveAction(null)
@@ -95,14 +95,14 @@ export default function InvoiceDetailPage() {
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
-    } catch (err: any) {
+    } catch {
         toast.error("Download Failed", { description: "Could not generate the official PDF." });
     } finally {
         setActiveAction(null);
     }
   };
 
-  const handleAction = (action: string, mutation: any) => {
+  const handleAction = (action: string, mutation: { mutate: () => void }) => {
     setActiveAction(action);
     mutation.mutate();
   };
@@ -228,7 +228,7 @@ export default function InvoiceDetailPage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {invoice.lines?.map((line: any, idx: number) => (
+                        {invoice.lines?.map((line: Record<string, unknown>, idx: number) => (
                             <TableRow key={idx} className="hover:bg-slate-50/50 transition-colors">
                                 <TableCell className="text-center font-mono text-xs text-slate-400">
                                     {idx + 1}
@@ -329,7 +329,7 @@ export default function InvoiceDetailPage() {
                 <CardContent>
                     <div className="space-y-4">
                         {invoice.state_transitions?.length > 0 ? (
-                            invoice.state_transitions.map((transition: any, idx: number) => (
+                            invoice.state_transitions.map((transition: Record<string, string>, idx: number) => (
                                 <div key={idx} className="relative pl-4 border-l pb-4 last:pb-0">
                                     <div className="absolute -left-1 top-1 h-2 w-2 rounded-full bg-primary" />
                                     <p className="text-xs font-bold leading-none capitalize">{transition.to_status.replace('_', ' ')}</p>

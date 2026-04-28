@@ -61,7 +61,7 @@ export default function TeamManagementPage() {
       setInviteEmail('');
       toast.success('Member added successfully');
     },
-    onError: (err: any) => {
+    onError: (err: { response?: { data?: { message?: string } } }) => {
       toast.error('Invitation failed', {
         description: err.response?.data?.message || 'The user must already have a Veridex account to be added.'
       });

@@ -22,7 +22,7 @@ export interface ProductPayload {
 }
 
 export const productApi = {
-  list: (params?: any) => client.get('/products', { params }),
+  list: (params?: Record<string, unknown>) => client.get('/products', { params }),
   get: (id: number) => client.get(`/products/${id}`),
   create: (data: ProductPayload) => client.post('/products', data),
   update: (id: number, data: ProductPayload) => client.put(`/products/${id}`, data),

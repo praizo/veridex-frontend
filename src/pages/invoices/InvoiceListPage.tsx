@@ -105,7 +105,7 @@ export default function InvoiceListPage() {
                 </TableCell>
               </TableRow>
             ) : (
-                invoices.map((invoice: any, index: number) => (
+                invoices.map((invoice: Record<string, unknown>, index: number) => (
                     <TableRow key={invoice.id}>
                         <TableCell className="text-center font-mono text-xs text-muted-foreground">
                             {index + 1}
